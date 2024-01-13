@@ -4,15 +4,13 @@ import (
 	"crypto/tls"
 	"embed"
 	"fmt"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 )
-
-// go:embed all:static
-var fsys embed.FS
 
 func ListenAndServe(mux *http.ServeMux, addr, dirCache string, selfSign bool) error {
 	var err error
@@ -61,9 +59,17 @@ func ListenAndServe(mux *http.ServeMux, addr, dirCache string, selfSign bool) er
 	return <-errc
 }
 
+// go:embed all:static
+var fsys embed.FS
+
+func StaticSite() (fs.FS, error) {
+	return fs.Sub(fsys, "static")
+}
+
 func Server(addr, dirCache string, selfSign bool) {
 	mux := http.NewServeMux()
-	mux.Handle("/", http.HandlerFunc(Index))
+	fs := http.FileServer(http.Dir("static"))
+	mux.Handle("/", http.StripPrefix("/", fs))
 
 	errc := make(chan error)
 	err := ListenAndServe(mux, addr, dirCache, selfSign)
