@@ -66,9 +66,9 @@ func StaticSite() (fs.FS, error) {
 	return fs.Sub(fsys, "static")
 }
 
-func Server(addr, dirCache string, selfSign bool) {
+func Server(fsDir, addr, dirCache string, selfSign bool) {
 	mux := http.NewServeMux()
-	fs := http.FileServer(http.Dir("static"))
+	fs := http.FileServer(http.Dir(fsDir))
 	mux.Handle("/", http.StripPrefix("/", fs))
 
 	errc := make(chan error)

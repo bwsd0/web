@@ -11,9 +11,10 @@ var (
 	addr     = flag.String("addr", ":4433", "listen address")
 	selfSign = flag.Bool("s", true, "self-sign X509 certificate")
 	dirCache = flag.String("c", "/etc/ssl/private", "X509 certificate cache")
+	fsDir    = flag.String("fsdir", "static", "file system directory")
 )
 
-const usageLine = `usage: site [-addr addr] [-s] [-c certdir]
+const usageLine = `usage: site [-addr addr] [-s] [-c certdir] [-fsdir dir]
 options:
 `
 
@@ -32,5 +33,5 @@ func main() {
 	if port := os.Getenv("PORT"); port != "" {
 		*addr = ":" + port
 	}
-	Server(*addr, *dirCache, *selfSign)
+	Server(*fsDir, *addr, *dirCache, *selfSign)
 }

@@ -6,6 +6,8 @@ suite.
 
 Usage:
 
+`site [-addr addr] [-s] [-c certdir] [-fsdir dir]`
+
 ```bash
 hostname example.com
 web
