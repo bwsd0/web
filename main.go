@@ -13,7 +13,7 @@ var (
 	dirCache = flag.String("c", "/etc/ssl/private", "X509 certificate cache")
 )
 
-const usageLine = `usage: site [-addr addr] [-s] [-c certdir] domain
+const usageLine = `usage: site [-addr addr] [-s] [-c certdir]
 options:
 `
 

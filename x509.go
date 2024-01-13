@@ -13,6 +13,7 @@ import (
 	"crypto/x509/pkix"
 	"fmt"
 	"math/big"
+	"os"
 	"strings"
 	"time"
 
@@ -47,7 +48,7 @@ func selfSignedX509(dirCache string) (*tls.Config, error) {
 	tmpl := &x509.Certificate{
 		SerialNumber: serial,
 		Subject: pkix.Name{
-			Organization: []string{"bwsd"},
+			Organization: []string{"web"},
 		},
 		NotBefore:   time.Now().Add(-time.Minute),
 		NotAfter:    time.Now().Add(7 * 24 * time.Hour),
@@ -75,7 +76,10 @@ func autocertX509(dirCache string) (*autocert.Manager, error) {
 	m := &autocert.Manager{
 		Prompt: autocert.AcceptTOS,
 		HostPolicy: func(ctx context.Context, host string) error {
-			const domain = "bwsd.net"
+			domain, err := os.Hostname()
+			if err != nil {
+				return err
+			}
 			if !strings.HasSuffix(host, "."+domain) && host != domain {
 				return fmt.Errorf("domain (%q) disallowed by autocert host policy", host)
 			}
