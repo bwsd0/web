@@ -1,0 +1,4 @@
+Canonical: https://bwsd.net/.well-known/security.txt
+Contact: mailto:security@bwsd.net
+Expires: 2025-03-01T12:00:00.000Z
+Preferred-Languages: en
