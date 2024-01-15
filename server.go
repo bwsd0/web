@@ -2,9 +2,7 @@ package main
 
 import (
 	"crypto/tls"
-	"embed"
 	"fmt"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -57,13 +55,6 @@ func ListenAndServe(mux *http.ServeMux, addr, dirCache string, selfSign bool) er
 	}()
 
 	return <-errc
-}
-
-// go:embed all:static
-var fsys embed.FS
-
-func StaticSite() (fs.FS, error) {
-	return fs.Sub(fsys, "static")
 }
 
 func Server(fsDir, addr, dirCache string, selfSign bool) {
